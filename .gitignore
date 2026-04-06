@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Build output
+dist/
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# PyInstaller output
+*.manifest
+*.exe
+
+# Local config
+.env
+
+# Test/cache
+.pytest_cache/
+.mypy_cache/
+.coverage
+
+# Runtime output
+output/
+captures/
