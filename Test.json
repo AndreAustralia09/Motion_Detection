@@ -1,0 +1,177 @@
+{
+  "schema_version": 1,
+  "project_name": "Untitled Project",
+  "debug_logging": false,
+  "cameras": [
+    {
+      "id": "cam_d26ca5e1",
+      "name": "USB2.0 Camera",
+      "source": 0,
+      "enabled": true,
+      "mirror_horizontal": false,
+      "flip_vertical": false,
+      "detection": {
+        "mode": "person",
+        "confidence_threshold": 0.5,
+        "min_box_area": 1200,
+        "entry_delay_ms": 200,
+        "exit_delay_ms": 300,
+        "trigger_point_offset": 0.95
+      },
+      "zones": [
+        {
+          "id": "cam_d26ca5e1_zone_6c19dba7",
+          "name": "Zone01",
+          "polygon": [
+            [
+              299,
+              265
+            ],
+            [
+              355,
+              152
+            ],
+            [
+              525,
+              146
+            ],
+            [
+              511,
+              276
+            ]
+          ],
+          "relay_id": 1,
+          "allow_shared_relay": true,
+          "enabled": true,
+          "trigger_mode": "while_occupied"
+        },
+        {
+          "id": "cam_d26ca5e1_zone_dc9b57ea",
+          "name": "Zone02",
+          "polygon": [
+            [
+              62,
+              180
+            ],
+            [
+              108,
+              65
+            ],
+            [
+              225,
+              55
+            ],
+            [
+              236,
+              180
+            ]
+          ],
+          "relay_id": 1,
+          "allow_shared_relay": true,
+          "enabled": true,
+          "trigger_mode": "while_occupied"
+        },
+        {
+          "id": "cam_d26ca5e1_zone_6f359c51",
+          "name": "Zone03",
+          "polygon": [
+            [
+              81,
+              367
+            ],
+            [
+              105,
+              275
+            ],
+            [
+              256,
+              243
+            ],
+            [
+              216,
+              365
+            ]
+          ],
+          "relay_id": 3,
+          "allow_shared_relay": false,
+          "enabled": true,
+          "trigger_mode": "while_occupied"
+        },
+        {
+          "id": "cam_d26ca5e1_zone_4aacbd56",
+          "name": "Zone04",
+          "polygon": [
+            [
+              311,
+              401
+            ],
+            [
+              307,
+              320
+            ],
+            [
+              469,
+              316
+            ],
+            [
+              464,
+              404
+            ]
+          ],
+          "relay_id": 4,
+          "allow_shared_relay": false,
+          "enabled": true,
+          "trigger_mode": "while_occupied"
+        },
+        {
+          "id": "cam_d26ca5e1_zone_dfd078e0",
+          "name": "Zone05",
+          "polygon": [
+            [
+              329,
+              101
+            ],
+            [
+              398,
+              33
+            ],
+            [
+              585,
+              41
+            ],
+            [
+              533,
+              131
+            ]
+          ],
+          "relay_id": 5,
+          "allow_shared_relay": false,
+          "enabled": true,
+          "trigger_mode": "while_occupied"
+        }
+      ],
+      "ignore_areas": [],
+      "detection_area": []
+    }
+  ],
+  "hardware": {
+    "com_port": "COM3",
+    "serial_mode": "real",
+    "auto_connect_serial": true,
+    "baud_rate": 9600,
+    "timeout_ms": 200,
+    "retry_count": 3,
+    "mock_response_delay_ms": 75,
+    "mock_drop_rate": 0.0,
+    "mock_corruption_rate": 0.0,
+    "relay_board_count": 1,
+    "relays_per_board": 8,
+    "connected": true
+  },
+  "performance": {
+    "inference_resolution": 416,
+    "max_detection_fps": 5.0,
+    "background_camera_fps": 2.0,
+    "mirror_horizontal": false
+  }
+}
