@@ -1,147 +1,188 @@
 # Interactive Zone Trigger
 
-Desktop monitoring app for multi-camera video, YOLO person/face detection, polygon trigger zones, delayed relay triggering, serial hardware control, and runtime diagnostics.
+Desktop monitoring application for multi-camera video with real-time detection, configurable trigger zones, and hardware relay control.
 
-## Quick Start
+## Features
 
-### Windows operator launch
-- Double-click `run_app.bat`
-- If a local virtual environment exists, it will be used automatically
-- If not, the script falls back to `py -3` or `python`
+* Multi-camera monitoring (USB/IP cameras via OpenCV)
+* YOLO-based detection:
 
-### Development launch
-```powershell
-python -m app.main
+  * Person detection
+  * Face detection
+  * Hand detection
+* Polygon-based trigger zones
+* Ignore zones (filter unwanted areas)
+* Delayed relay triggering
+* Serial hardware integration (Arduino relay control)
+* Runtime diagnostics and logging
+* Project-based configuration (save/load setups)
+
+---
+
+## Project Structure
+
 ```
+Motion_Detection/
+├── app/                          # Application source code
+│   ├── core/                    # Core logic and controllers
+│   ├── models/                  # Data models
+│   ├── storage/                 # Persistence (projects/settings)
+│   ├── ui/                      # UI components
+│   └── utils/                   # Utility functions
+│
+├── build/
+│   └── pyinstaller/             # Packaging configuration
+│       └── interactive_zone_trigger.spec
+│
+├── docs/                        # Documentation
+│   └── status.md
+│
+├── examples/
+│   └── projects/                # Example project configurations
+│       └── test.json
+│
+├── hardware/
+│   └── arduino/
+│       └── relay_serial_bridge/ # Arduino relay firmware
+│
+├── models/                      # Local ML model files
+│   ├── yolov8n.pt              # Person detection
+│   ├── yolov8-face.pt          # Face detection
+│   └── yolov8-hand.pt          # Hand detection
+│
+├── tests/                       # Test scaffolding (future)
+├── README.md
+├── requirements.txt
+└── .gitignore
+```
+
+---
 
 ## Requirements
 
-- Python 3.12 recommended
-- Windows desktop environment for the current deployment target
-- USB/IP cameras supported by OpenCV
-- Optional serial hardware using a simple Arduino-style text protocol
+* Python 3.12 (recommended)
+* Windows (primary target)
+* USB or IP cameras
+* Optional: Arduino relay hardware
+
+---
+
+## Installation
+
+Clone the repository:
+
+```
+git clone https://github.com/AndreAustralia09/Motion_Detection.git
+cd Motion_Detection
+```
+
+Create and activate a virtual environment:
+
+```
+python -m venv .venv
+.venv\Scripts\activate
+```
 
 Install dependencies:
 
-```powershell
+```
 pip install -r requirements.txt
 ```
 
+---
+
+## Running the Application
+
+Run in development mode:
+
+```
+python -m app.main
+```
+
+---
+
 ## Models
 
-The app looks for model files in these locations:
+Models are stored locally in the `models/` folder.
 
-- `Models\yolov8n.pt`
-- `Models\yolov8-face.pt`
-- root-level `yolov8n.pt`
+### Available models
 
-Current repo layout already includes:
+* `yolov8n.pt` → person detection
+* `yolov8-face.pt` → face detection
+* `yolov8-hand.pt` → hand detection
 
-- [Models\yolov8n.pt](/C:/Users/Australia/Desktop/interactive-zone-trigger-starter/starter_app/Models/yolov8n.pt)
-- [Models\yolov8-face.pt](/C:/Users/Australia/Desktop/interactive-zone-trigger-starter/starter_app/Models/yolov8-face.pt)
+These are selectable in the application UI.
 
-Notes:
-- Person detection can also fall back to the Ultralytics model name if a local file is not packaged.
-- Face detection expects a local face model file.
+---
 
-## App Data Locations
+## Example Projects
 
-The app stores operator data in:
+Example configurations are located in:
 
-- `C:\Users\<User>\.interactive_zone_trigger\app_settings.json`
-- `C:\Users\<User>\.interactive_zone_trigger\app.log`
-- rotated logs: `app.log.1`, `app.log.2`, `app.log.3`
+```
+examples/projects/
+```
 
-The live log tab can open the current log file directly.
+Load these from the UI to test detection, zones, and triggers.
 
-## Project Workflow
+---
 
-1. Launch the app
-2. Create or open a project
-3. Add/configure cameras in the `Project` tab
-4. Draw and edit zones in the camera view
-5. Configure detection in the `Detection` tab
-6. Configure serial hardware in `Serial Communication`
-7. Save the project
+## Hardware Integration
 
-Saved projects restore on next launch if:
+Arduino relay firmware is located in:
 
-- `Auto-load last project` is enabled in the saved project
-- the last project path still exists
+```
+hardware/arduino/relay_serial_bridge/
+```
 
-## Cameras
+This enables:
 
-- `Detected Cameras` are sources available right now
-- `Configured Cameras` are stored in the project
-- Enabled configured cameras become active at runtime
-- Disabled configured cameras stay in the project but do not run
+* Serial communication from the app
+* Relay triggering based on detection events
 
-## Serial Hardware
+---
 
-For hardware-free testing:
+## Packaging (Executable Build)
 
-- enable `Simulation Mode (No Hardware)`
+PyInstaller configuration:
 
-For real serial hardware:
+```
+build/pyinstaller/interactive_zone_trigger.spec
+```
 
-1. Refresh ports
-2. Select the COM port
-3. Select the baud rate
-4. Disable simulation mode
-5. Click `Connect`
+To build:
 
-If `Auto-connect serial on startup` is enabled, the app will reconnect automatically after project load and retry every 5 seconds if the device is unavailable.
+```
+pyinstaller build/pyinstaller/interactive_zone_trigger.spec
+```
 
-## First Run / Defaults
+Output will be in:
 
-- If no project is loaded, the app starts with a default `Camera 1`
-- No zones are created automatically
-- Serial defaults to simulation mode
-- Start minimized is off by default
+```
+dist/
+```
 
-## Included Example Projects
+---
 
-This repo currently includes example project files in the root:
+## Known Limitations
 
-- `Test.json`
-- `Test Zone.json`
-- `Test Multiple Zones and Faces.json`
+* Camera discovery currently uses simple OpenCV source probing
+* Camera index ordering may change between restarts
+* Limited hot-plug support for cameras
+* Performance depends on hardware (CPU/GPU)
 
-Treat them as examples only. Save production projects under your own site/customer naming.
+---
 
-## Common Checks
+## Future Improvements
 
-### No video
-- Confirm the camera is enabled in the project
-- Check that the source appears in `Detected Cameras`
-- Check System Resources for camera state: `Starting`, `Live`, `Reconnecting`, `Disconnected`
+* Proper camera device enumeration (replace index probing)
+* Improved hardware abstraction layer
+* Configurable detection pipelines
+* Better packaging and installer support
+* Logging and diagnostics improvements
 
-### Face detection not working
-- Confirm the face model file exists in `Models\yolov8-face.pt`
-- Check the Detection tab status message
-- Check the log for `[DETECTION]` warnings
+---
 
-### Serial not connecting
-- Confirm simulation mode is off
-- Confirm the correct COM port and baud rate
-- Check the live log for `[SERIAL ERROR]` messages
+## License
 
-### Project changes not restored after restart
-- The project must be saved explicitly
-- Unsaved changes are intentionally not auto-persisted
-
-## Packaging Notes
-
-The app now resolves resource paths more safely for packaged/frozen execution:
-
-- local runtime bundle directory first
-- project root fallback for development
-
-This is intended to make PyInstaller-style packaging easier, but a full installer/build pipeline is not included in this phase.
-
-## Known Limits
-
-- Camera discovery still uses simple OpenCV source probing
-- Face model must be supplied locally
-- No full installer or updater is included yet
-- GUI automation tests are intentionally limited; coverage focuses on logic and persistence
+Add your license here (e.g. MIT, proprietary, etc.)
